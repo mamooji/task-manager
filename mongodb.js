@@ -1,8 +1,6 @@
 //CRUD operations
 
 import mongodb from "mongodb";
-// const MongoClient = mongodb.MongoClient;
-// const ObjectID = mongodb.ObjectID;
 
 const { MongoClient, ObjectID } = mongodb;
 
@@ -16,26 +14,27 @@ MongoClient.connect(
     if (error) {
       return console.log("Unable to connect to database");
     }
-
     const db = client.db(databaseName);
 
-    db.collection("tasks").findOne(
-      { _id: new ObjectID("5ffc7ebbda356a04c418dc1b") },
-      (error, task) => {
-        if (error) {
-          return console.log("Unable to fetch task");
-        }
-        console.log(task);
-      }
-    );
-
+    // db.collection("users")
+    //   .deleteMany({
+    //     age: 22,
+    //   })
+    //   .then((result) => {
+    //     console.log(result);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
     db.collection("tasks")
-      .find({ completed: false })
-      .toArray((error, tasks) => {
-        if (error) {
-          return console.log(error);
-        }
-        console.log(tasks);
+      .deleteOne({
+        description: "Kill Tommy",
+      })
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }
 );
