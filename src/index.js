@@ -2,6 +2,8 @@
 import express from "express";
 import "./db/mongoose.js";
 import jwt from "jsonwebtoken";
+import { Task } from "./models/task.js";
+import { User } from "./models/user.js";
 
 //importing models
 import { userRouter } from "./routers/user.js";
@@ -19,9 +21,9 @@ const port = process.env.PORT || 3000;
 //   }
 // });
 
-app.use((req, res, next) => {
-  res.status(503).send("site is in maintenance currently");
-});
+// app.use((req, res, next) => {
+//   res.status(503).send("site is in maintenance currently");
+// });
 
 //using our routers we imported
 app.use(express.json());
@@ -33,14 +35,5 @@ app.listen(port, () => {
   console.log("Server is up on port " + port);
 });
 
-const myFunction = async () => {
-  const token = jwt.sign({ _id: "abc123" }, "thisismynewcourse", {
-    expiresIn: "7 days",
-  });
-  console.log(token);
-
-  const data = jwt.verify(token, "thisismynewcourse");
-  console.log(data);
-};
-
-myFunction();
+const main = async () => {};
+main();
