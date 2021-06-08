@@ -1,9 +1,11 @@
 import express from "express";
-const router = new express.Router();
-import { User } from "../models/user.js";
-import { authentication } from "../middleware/auth.js";
 import multer from "multer";
 import sharp from "sharp";
+import { User } from "../models/user.js";
+import { authentication } from "../middleware/auth.js";
+import { sendWelcomeEmail, sendCancelationEmail } from "../emails/account.js";
+
+const router = new express.Router();
 
 router.get("/test", (req, res) => {
   res.send("from a new file");
@@ -15,6 +17,7 @@ router.post("/users", async (req, res) => {
 
   try {
     await user.save();
+    sendWelcomeEmail(user.email, user.name);
     const token = await user.generateAuthToken();
 
     res.status(201).send({ user, token });
@@ -91,6 +94,7 @@ router.patch("/users/me", authentication, async (req, res) => {
 router.delete("/users/me", authentication, async (req, res) => {
   try {
     await req.user.remove();
+    sendCancelationEmail(req.user.email, req.user.name);
     res.send(req.user);
   } catch (e) {
     res.status(400).send(e);
